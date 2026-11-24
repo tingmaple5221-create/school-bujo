@@ -3,22 +3,22 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>教學手帖</title>
+<title>Eva's Schedule</title>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="教學手帖">
+<meta name="apple-mobile-web-app-title" content="Eva's Schedule">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#EEEDE6">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Great+Vibes&display=swap" rel="stylesheet">
 <style>
-:root{--paper:#EEEDE6;--ink:#3A383C;--soft:#86837C;--dot:#C3C0B5;--acc:#6E8E88;--hl:#F0D98F;--line:#D3D0C4}
+:root{--paper:#EEEDE6;--ink:#3A383C;--soft:#86837C;--dot:#C3C0B5;--acc:#6E8E88;--hl:#F0D98F;--line:#D3D0C4;--u:min(26px,calc((100vw - 14px)/16))}
 *{box-sizing:border-box}
-body{margin:0;font-family:'LXGW WenKai TC','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;color:var(--ink);background:var(--paper) radial-gradient(circle,var(--dot) 1.1px,transparent 1.4px) 0 0/22px 22px;line-height:1.5;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+body{margin:0;font-family:'LXGW WenKai TC','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;color:var(--ink);background:var(--paper) radial-gradient(circle,var(--dot) 1.1px,transparent 1.4px) 0 0/var(--u) var(--u);line-height:1.5;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
 #app{max-width:1000px;margin:0 auto;padding:12px 12px 60px}
-h1{font-size:26px;margin:8px 4px 4px;letter-spacing:.08em}
+h1{font-family:'Great Vibes','Snell Roundhand','Apple Chancery','Brush Script MT',cursive;font-weight:400;font-size:46px;line-height:1.15;margin:4px 4px 2px;letter-spacing:0}
 h2{font-size:18px;margin:0 0 10px}h3{margin:0 0 10px}
 .tabs{display:flex;gap:6px;margin:6px 0 14px;border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--paper);z-index:5;padding-top:6px}
 .tabs button{flex:1;font:inherit;font-size:16px;border:0;background:none;padding:8px 4px;cursor:pointer;color:var(--soft);border-radius:8px 8px 0 0}
@@ -32,7 +32,7 @@ textarea{width:100%}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0}
 .nav{display:flex;gap:8px;align-items:center;margin-bottom:10px}.nav select{flex:1}
 .tape{display:inline-block;background:repeating-linear-gradient(-45deg,#C9D6CF 0 8px,#DDE6E0 8px 16px);padding:3px 18px;transform:rotate(-1.2deg);font-weight:700;font-size:17px;box-shadow:0 1px 2px #0002}
-.wkh{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin:4px 0 8px}#sync{font-size:13px;font-weight:400;color:var(--soft);margin-left:10px;letter-spacing:0}
+.wkh{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin:4px 0 8px}#sync{font-family:'LXGW WenKai TC','Noto Sans TC',sans-serif;font-size:13px;font-weight:400;color:var(--soft);margin-left:10px;letter-spacing:0}
 .hlr{background:linear-gradient(transparent 12%,#F3DE7E 12%,#F3DE7E 90%,transparent 90%);padding:2px 8px;font-size:14px;font-weight:700;border-radius:3px 8px 3px 8px;min-width:0;word-break:break-all}.hlr .x{position:static;font-size:16px;margin-left:2px;padding:0 2px}.wnote{white-space:pre-wrap;font-size:13px;margin-top:8px}
 .x{position:absolute;right:6px;top:3px;border:0;background:none;font-size:18px;cursor:pointer;color:var(--soft)}
 .tw{overflow-x:auto;border:1.5px solid var(--ink);border-radius:12px 9px 12px 9px;background:rgba(255,255,255,.5)}
@@ -65,17 +65,17 @@ summary{display:flex;align-items:center;gap:8px;list-style:none;font-weight:700;
 .nt{display:none;width:100%;margin:0 0 6px 24px;max-width:calc(100% - 24px);font-size:14px}
 .ck:has(input:checked)+.nt{display:block}
 .pv{font-size:13px;color:var(--soft);min-width:120px}
-.log{font-size:13px;color:var(--soft);margin:2px 0}.pk{display:flex;justify-content:space-between;width:100%;font:inherit;text-align:left;background:rgba(255,255,255,.6);border:1.5px dashed var(--soft);border-radius:9px;padding:6px 10px;margin:4px 0;cursor:pointer;color:var(--ink)}.pk:hover{background:var(--hl)}.hist{font-size:13px;white-space:pre-wrap;background:rgba(255,255,255,.6);border-radius:8px;padding:6px 10px;margin:6px 0}.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:8px 18px;border-radius:10px;z-index:30;font-size:14px}@media(max-width:560px){.cb,.hc{width:29px;height:24px;font-size:10px}.hc{height:18px;line-height:18px;font-size:9.5px}.pc,.hd{gap:2px}.pr{gap:4px}}@media(max-width:700px){.tt select{font-size:11px;padding:1px 0;appearance:none;-webkit-appearance:none;text-align:center;text-align-last:center;border-radius:6px}.tt th{font-size:12px}#app{padding:8px 6px 60px}.card{padding:10px}th{font-size:12px}th small{font-size:10px}th:first-child,td:first-child{width:22px;font-size:11px}td{padding:2px;height:48px}.chip{font-size:11px;padding:0 5px}.pi{font-size:9.5px}.lb{font-size:11px}.tape{font-size:15px}}
+.log{font-size:13px;color:var(--soft);margin:2px 0}.pk{display:flex;justify-content:space-between;width:100%;font:inherit;text-align:left;background:rgba(255,255,255,.6);border:1.5px dashed var(--soft);border-radius:9px;padding:6px 10px;margin:4px 0;cursor:pointer;color:var(--ink)}.pk:hover{background:var(--hl)}.hist{font-size:13px;white-space:pre-wrap;background:rgba(255,255,255,.6);border-radius:8px;padding:6px 10px;margin:6px 0}.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:8px 18px;border-radius:10px;z-index:30;font-size:14px}@media(max-width:560px){.cb,.hc{width:29px;height:24px;font-size:10px}.hc{height:18px;line-height:18px;font-size:9.5px}.pc,.hd{gap:2px}.pr{gap:4px}}@media(max-width:700px){.tt select{font-size:11px;padding:1px 0;appearance:none;-webkit-appearance:none;text-align:center;text-align-last:center;border-radius:6px}.tt th{font-size:12px}#app{padding:8px 4px 60px}.card{padding:10px}th{font-size:12px}th small{font-size:10px}th:first-child,td:first-child{width:22px;font-size:11px}td{padding:2px;height:48px}.chip{font-size:11px;padding:0 5px}.pi{font-size:9.5px}.lb{font-size:11px}.tape{font-size:15px}}
 #ov{display:none;position:fixed;inset:0;background:#3a383c66;z-index:20;align-items:center;justify-content:center;padding:12px}
 #ov.on{display:flex}
 .box{background:var(--paper) radial-gradient(circle,var(--dot) 1.1px,transparent 1.4px) 0 0/22px 22px;border:2px solid var(--ink);border-radius:16px 11px 17px 11px;padding:18px;width:100%;max-width:460px;max-height:86vh;overflow:auto;position:relative}
 .big{text-align:center;font-size:18px}.big .x{font-size:26px;right:10px;top:6px}
 .tt td{height:auto;cursor:default;padding:2px}.tt select{width:100%;font-size:13px;padding:2px}
 .tt{min-width:0}
-.cwrap{overflow-x:auto;padding:3px}
-.cg{display:grid;grid-template-columns:22px repeat(5,66px);width:352px;margin:0 auto;box-shadow:0 0 0 1.5px var(--ink);border-radius:2px}
+.cwrap{overflow-x:auto;padding:2px}
+.cg{display:grid;grid-template-columns:var(--u) repeat(5,calc(var(--u)*3));width:calc(var(--u)*16);margin:0 auto;box-shadow:0 0 0 1.5px var(--ink);border-radius:2px}
 .cg>div{box-sizing:border-box;border-left:1px dashed #B5B2A5;border-top:1px dashed #B5B2A5;overflow:hidden}
-.gh{height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:13px;line-height:1.25}.gh small{font-size:10px;color:var(--soft);font-weight:400}
+.gh{height:calc(var(--u)*2);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:13px;line-height:1.25}.gh small{font-size:10px;color:var(--soft);font-weight:400}
 .gl{display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--soft)}
 .gc{padding:2px 3px;cursor:pointer;line-height:1.15;background:color-mix(in srgb,var(--c,transparent) 26%,transparent)}
 .gc:hover{outline:2px solid var(--acc);outline-offset:-2px}
@@ -85,12 +85,12 @@ summary{display:flex;align-items:center;gap:8px;list-style:none;font-weight:700;
 .td{display:flex;align-items:baseline;gap:8px;padding:6px 2px;border-bottom:1px dotted var(--line);cursor:pointer}.td .tb{width:14px;text-align:center;flex:none;font-weight:700}.td .tdt{flex:1;min-width:0;word-break:break-all}.td.dn .tdt{text-decoration:line-through;color:var(--soft)}.td small{color:var(--soft);font-size:12px;flex:none}.td .x{position:static;flex:none}td.gr{background:#D9D7D0}td.oor{background:repeating-linear-gradient(-45deg,transparent 0 6px,#0000000a 6px 12px);cursor:default}td.oor:hover{outline:0}.tt td:hover{outline:0}
 #print{display:none}
 @media print{#app,#ov{display:none!important}#print{display:block}body{background:#fff}.wk{page-break-after:always}td{-webkit-print-color-adjust:exact;print-color-adjust:exact}.tw{overflow:visible}}
-@media(max-width:560px){h1{font-size:22px}.tabs button{font-size:15px}}
+@media(max-width:560px){h1{font-size:38px}.tabs button{font-size:15px}}
 </style>
 </head>
 <body>
 <div id="app">
-  <h1>教學手帖<small id="sync"></small></h1>
+  <h1>Eva's Schedule<small id="sync"></small></h1>
   <div class="tabs" id="tabs"></div>
   <div id="main"></div>
 </div>
@@ -99,7 +99,7 @@ summary{display:flex;align-items:center;gap:8px;list-style:none;font-weight:700;
 <input type="file" id="file" accept=".json,application/json" hidden>
 <script>
 const P=['M','1','2','3','4','N','5','6','7','E'],D=['一','二','三','四','五'];
-const PAL=['#E59A98','#EBAB82','#D9A25F','#EDD16F','#C8BF72','#AFCF86','#78C3A2','#6EBFD0','#88B3E8','#8C9BE6','#AD97E4','#CC96E0','#E48FD0','#E98FAE','#CBA37E'];
+const PAL=['#D3A09B','#D8AE86','#D2C07F','#B5C58C','#88BA9F','#84B6B5','#86AAC8','#99A4CE','#AE9CC8','#C99DBC','#CC95A5','#C98F79','#BDA895','#B8B1BD','#9FAEBA'];
 const $=s=>document.querySelector(s);
 const f=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const pd=s=>new Date(s+'T00:00:00');
@@ -152,14 +152,14 @@ function cell(d,p){if(d<S.start||d>S.end)return'';const k=d+'_'+p,e=eff(d,p),c=C
   if(g)h+=`<span class="pi">• ${esc(it.title)}${g.st==='done'?' ✓':''}</span>`}));
  if(r.text)h+=`<span class="pi">${esc(r.text)}</span>`;
  return h}
-const RH=[33,55,55,55,55,33,55,55,55,33];
+const RH=[1.5,2.5,2.5,2.5,2.5,1.5,2.5,2.5,2.5,1.5];
 function week(m,print){const ds=[0,1,2,3,4].map(i=>f(add(m,i))),mk=f(m);
  let h=`<div class="wk"><div class="wkh"><span class="tape">${md(ds[0])} – ${md(ds[4])}</span>`;
  (S.rem[mk]||[]).forEach(r=>h+=`<span class="hlr">☆ ${esc(r.text)}${print?'':`<button class="x" onclick="delRem('${mk}','${r.id}')">×</button>`}</span>`);
  h+=`</div><div class="cwrap"><div class="cg"><div class="gh"></div>${ds.map((d,i)=>`<div class="gh">${D[i]}<small>${md(d)}</small></div>`).join('')}`;
- P.forEach((n,p)=>{h+=`<div class="gl" style="height:${RH[p]}px">${n}</div>`;
+ P.forEach((n,p)=>{h+=`<div class="gl" style="height:calc(var(--u)*${RH[p]})">${n}</div>`;
   ds.forEach(d=>{const oor=d<S.start||d>S.end,o=S.over[d+'_'+p],c=C(eff(d,p).cid),cl=oor?'oor':(o&&!o.cid?'gr':'');
-   h+=`<div class="gc ${cl}" style="height:${RH[p]}px;${c?`--c:${c.color}`:''}" ${print||oor?'':`onclick="openSlot('${d}',${p})"`}>${cell(d,p)}</div>`})});
+   h+=`<div class="gc ${cl}" style="height:calc(var(--u)*${RH[p]});${c?`--c:${c.color}`:''}" ${print||oor?'':`onclick="openSlot('${d}',${p})"`}>${cell(d,p)}</div>`})});
  h+='</div></div>';
  const T=(S.todo||{})[mk]||[];
  if(print&&T.length)h+=`<div class="wnote"><b>To Do List</b><br>${T.map(t=>`${t.done?'×':'•'} ${t.done?`<s>${esc(t.text)}</s> ${md(t.done)}`:esc(t.text)}`).join('<br>')}</div>`;
@@ -175,7 +175,7 @@ function todoCheck(){if($('#ov').classList.contains('on'))return;const pk=f(add(
  modal(`<div class="big"><button class="x" onclick="closeM()">×</button><h3>上週仍未完成</h3><div style="text-align:left;font-size:16px">${L.map(t=>`<div>• ${esc(t.text)}</div>`).join('')}</div><div class="row" style="justify-content:center;margin-top:12px"><button class="btn pri" onclick="moveTodo('${pk}')">移到本週 To Do</button><button class="btn" onclick="closeM()">關閉</button></div></div>`)}
 function moveTodo(pk){const ck=f(mon(new Date())),L=S.todo[pk].filter(t=>!t.done);S.todo[pk]=S.todo[pk].filter(t=>t.done);S.todo[ck]=(S.todo[ck]||[]).concat(L);save();closeM();toToday();render();toast('已移到本週')}
 function alignGrid(){const b=document.body,el=document.querySelector('#main .cg');if(!el){b.style.backgroundPosition='0 0';return}
- const r=el.getBoundingClientRect(),m=v=>(((v+.5-11)%22)+22)%22;b.style.backgroundPosition=`${m(r.left+scrollX)}px ${m(r.top+scrollY)}px`}
+ const r=el.getBoundingClientRect(),u=r.width/16,m=v=>(((v+.5-u/2)%u)+u)%u;b.style.backgroundPosition=`${m(r.left+scrollX)}px ${m(r.top+scrollY)}px`}
 addEventListener('resize',()=>alignGrid());if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>alignGrid());
 function calView(){const W=wks();if(!W.length)return'<div class="card">請先到【設定】設定起訖日。</div>';
  wi=Math.max(0,Math.min(wi,W.length-1));
@@ -311,7 +311,7 @@ function doEnd(){const td=$('#td').value;if(!td)return toast('請選擇今日日
  ask('確定要格式化整份行事曆嗎？此動作無法復原。',()=>{_wiped=false;
   const wipe=()=>{if(_wiped)return;_wiped=true;const b=blank();S.start=b.start;S.end=b.end;S.over={};S.rec={};S.units=b.units;S.rem={};S.wnote={};S.todo={};S.todoSeen={};S.log=[];S.meta.term=td;S.meta.created=Date.now();save();$('#print').innerHTML='';toToday();render();toast('已格式化')};
   if(pj)exportData();
-  if(pp){$('#print').innerHTML=`<h1>教學手帖　${S.start} ～ ${S.end}（結算日 ${td}）</h1>`+wks().map(m=>week(m,true)).join('');window.onafterprint=()=>setTimeout(wipe,300);setTimeout(wipe,60000);window.print()}
+  if(pp){$('#print').innerHTML=`<h1>Eva's Schedule　${S.start} ～ ${S.end}（結算日 ${td}）</h1>`+wks().map(m=>week(m,true)).join('');window.onafterprint=()=>setTimeout(wipe,300);setTimeout(wipe,60000);window.print()}
   else wipe()})}
 
 /* ---------- cloud sync ---------- */
