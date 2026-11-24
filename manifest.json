@@ -1,6 +1,6 @@
 {
-  "name": "教學手帖",
-  "short_name": "教學手帖",
+  "name": "Eva's Schedule",
+  "short_name": "Eva's Schedule",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
