@@ -71,7 +71,18 @@ summary{display:flex;align-items:center;gap:8px;list-style:none;font-weight:700;
 .box{background:var(--paper) radial-gradient(circle,var(--dot) 1.1px,transparent 1.4px) 0 0/22px 22px;border:2px solid var(--ink);border-radius:16px 11px 17px 11px;padding:18px;width:100%;max-width:460px;max-height:86vh;overflow:auto;position:relative}
 .big{text-align:center;font-size:18px}.big .x{font-size:26px;right:10px;top:6px}
 .tt td{height:auto;cursor:default;padding:2px}.tt select{width:100%;font-size:13px;padding:2px}
-.tt{min-width:0}td.gr{background:#D9D7D0}td.oor{background:repeating-linear-gradient(-45deg,transparent 0 6px,#0000000a 6px 12px);cursor:default}td.oor:hover{outline:0}.tt td:hover{outline:0}
+.tt{min-width:0}
+.cwrap{overflow-x:auto;padding:3px}
+.cg{display:grid;grid-template-columns:22px repeat(5,66px);width:352px;margin:0 auto;box-shadow:0 0 0 1.5px var(--ink);border-radius:2px}
+.cg>div{box-sizing:border-box;border-left:1px dashed #B5B2A5;border-top:1px dashed #B5B2A5;overflow:hidden}
+.gh{height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:700;font-size:13px;line-height:1.25}.gh small{font-size:10px;color:var(--soft);font-weight:400}
+.gl{display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--soft)}
+.gc{padding:2px 3px;cursor:pointer;line-height:1.15;background:color-mix(in srgb,var(--c,transparent) 26%,transparent)}
+.gc:hover{outline:2px solid var(--acc);outline-offset:-2px}
+.gc.gr{background:#D9D7D0}.gc.oor{cursor:default;background:repeating-linear-gradient(-45deg,transparent 0 6px,#0000000a 6px 12px)}.gc.oor:hover{outline:0}
+.gc .chip{display:block;width:fit-content;max-width:100%;font-size:11px;padding:0 5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gc .pi{font-size:9.5px;line-height:1.15}.gc .lb{font-size:10.5px}
+.td{display:flex;align-items:baseline;gap:8px;padding:6px 2px;border-bottom:1px dotted var(--line);cursor:pointer}.td .tb{width:14px;text-align:center;flex:none;font-weight:700}.td .tdt{flex:1;min-width:0;word-break:break-all}.td.dn .tdt{text-decoration:line-through;color:var(--soft)}.td small{color:var(--soft);font-size:12px;flex:none}.td .x{position:static;flex:none}td.gr{background:#D9D7D0}td.oor{background:repeating-linear-gradient(-45deg,transparent 0 6px,#0000000a 6px 12px);cursor:default}td.oor:hover{outline:0}.tt td:hover{outline:0}
 #print{display:none}
 @media print{#app,#ov{display:none!important}#print{display:block}body{background:#fff}.wk{page-break-after:always}td{-webkit-print-color-adjust:exact;print-color-adjust:exact}.tw{overflow:visible}}
 @media(max-width:560px){h1{font-size:22px}.tabs button{font-size:15px}}
@@ -88,7 +99,7 @@ summary{display:flex;align-items:center;gap:8px;list-style:none;font-weight:700;
 <input type="file" id="file" accept=".json,application/json" hidden>
 <script>
 const P=['M','1','2','3','4','N','5','6','7','E'],D=['一','二','三','四','五'];
-const PAL=['#D3A09B','#D8AE86','#D2C07F','#B5C58C','#88BA9F','#84B6B5','#86AAC8','#99A4CE','#AE9CC8','#C99DBC','#BDA895','#A2AAA2','#DDB5B5','#97AE95','#B8B1BD'];
+const PAL=['#E59A98','#EBAB82','#D9A25F','#EDD16F','#C8BF72','#AFCF86','#78C3A2','#6EBFD0','#88B3E8','#8C9BE6','#AD97E4','#CC96E0','#E48FD0','#E98FAE','#CBA37E'];
 const $=s=>document.querySelector(s);
 const f=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const pd=s=>new Date(s+'T00:00:00');
@@ -101,7 +112,7 @@ const wdOf=s=>(pd(s).getDay()+6)%7;
 const tint=c=>c?`color-mix(in srgb,${c} 28%,white)`:'';
 
 const KEY='bujo-teach-v1';
-const blank=()=>{const m=mon(new Date());return{start:f(m),end:f(add(m,7*18-3)),classes:[],tt:{},over:{},rec:{},units:{L1:[],L2:[],L3:[],L4:[]},rem:{},wnote:{},log:[],meta:{created:Date.now(),lastExport:0,dismiss:0}}};
+const blank=()=>{const m=mon(new Date());return{start:f(m),end:f(add(m,7*18-3)),classes:[],tt:{},over:{},rec:{},units:{L1:[],L2:[],L3:[],L4:[]},rem:{},wnote:{},todo:{},todoSeen:{},log:[],meta:{created:Date.now(),lastExport:0,dismiss:0}}};
 let S;try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 S=S||blank();
 const localSave=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){alert('無法儲存資料，請確認瀏覽器未封鎖儲存功能')}};
@@ -121,7 +132,7 @@ function alert(m){toast(m)}
 let _ask=null;
 function ask(m,fn){_ask=fn;modal(`<h3>請確認</h3><p>${esc(m)}</p><div class="row"><button class="btn dng" onclick="askYes()">確定</button><button class="btn" onclick="closeM()">取消</button></div>`)}
 function askYes(){const f=_ask;_ask=null;closeM();f&&f()}
-function migrate(){S.wnote=S.wnote||{};S.units=S.units||{L1:[],L2:[],L3:[],L4:[]};
+function migrate(){S.wnote=S.wnote||{};S.todo=S.todo||{};S.todoSeen=S.todoSeen||{};for(const k in S.wnote){const v=S.wnote[k];if(typeof v==='string'&&v.trim())S.todo[k]=(S.todo[k]||[]).concat(v.split('\n').map(x=>x.trim()).filter(Boolean).map(x=>({id:uid(),text:x,done:null})))}S.wnote={};S.units=S.units||{L1:[],L2:[],L3:[],L4:[]};
  U.forEach(u=>S.units[u].forEach(it=>{it.log=it.log||[];if(it.prog){for(const cid in it.prog){const g=it.prog[cid];it.log.push({cid,date:g.date,slot:firstSlot(g.date,cid),st:g.st,note:g.note||''})}delete it.prog}}));
  for(const k in S.rec){const r=S.rec[k];if(r.items){const[d,p]=k.split('_'),cid=eff(d,+p).cid;r.items.forEach(i=>{const it=findProg(i.pid);if(it&&cid&&!it.log.some(e=>e.slot===k&&e.cid===cid))it.log.push({cid,date:d,slot:k,st:'saved',note:i.note||''})});delete r.items;if(!r.text)delete S.rec[k]}}}
 const today=()=>f(new Date());
@@ -141,23 +152,36 @@ function cell(d,p){if(d<S.start||d>S.end)return'';const k=d+'_'+p,e=eff(d,p),c=C
   if(g)h+=`<span class="pi">• ${esc(it.title)}${g.st==='done'?' ✓':''}</span>`}));
  if(r.text)h+=`<span class="pi">${esc(r.text)}</span>`;
  return h}
+const RH=[33,55,55,55,55,33,55,55,55,33];
 function week(m,print){const ds=[0,1,2,3,4].map(i=>f(add(m,i))),mk=f(m);
  let h=`<div class="wk"><div class="wkh"><span class="tape">${md(ds[0])} – ${md(ds[4])}</span>`;
  (S.rem[mk]||[]).forEach(r=>h+=`<span class="hlr">☆ ${esc(r.text)}${print?'':`<button class="x" onclick="delRem('${mk}','${r.id}')">×</button>`}</span>`);
- h+=`</div><div class="tw cw"><table><thead><tr><th></th>${ds.map((d,i)=>`<th>${D[i]}<small>${md(d)}</small></th>`).join('')}</tr></thead><tbody>`;
- P.forEach((n,p)=>{h+=`<tr class="${p==5?'noon':''}${p==1||p==6?' sep':''}"><td>${n}</td>`;
+ h+=`</div><div class="cwrap"><div class="cg"><div class="gh"></div>${ds.map((d,i)=>`<div class="gh">${D[i]}<small>${md(d)}</small></div>`).join('')}`;
+ P.forEach((n,p)=>{h+=`<div class="gl" style="height:${RH[p]}px">${n}</div>`;
   ds.forEach(d=>{const oor=d<S.start||d>S.end,o=S.over[d+'_'+p],c=C(eff(d,p).cid),cl=oor?'oor':(o&&!o.cid?'gr':'');
-  h+=`<td class="${cl}" ${c?`style="--c:${c.color}"`:''} ${print||oor?'':`onclick="openSlot('${d}',${p})"`}>${cell(d,p)}</td>`});h+='</tr>'});
- h+='</tbody></table></div>';
- if(print&&(S.wnote||{})[mk])h+=`<div class="wnote">${esc(S.wnote[mk])}</div>`;
+   h+=`<div class="gc ${cl}" style="height:${RH[p]}px;${c?`--c:${c.color}`:''}" ${print||oor?'':`onclick="openSlot('${d}',${p})"`}>${cell(d,p)}</div>`})});
+ h+='</div></div>';
+ const T=(S.todo||{})[mk]||[];
+ if(print&&T.length)h+=`<div class="wnote"><b>To Do List</b><br>${T.map(t=>`${t.done?'×':'•'} ${t.done?`<s>${esc(t.text)}</s> ${md(t.done)}`:esc(t.text)}`).join('<br>')}</div>`;
  return h+'</div>'}
-const noteCard=m=>`<div class="card" style="margin-top:12px"><h2>本週筆記</h2><textarea rows="4" oninput="setNote('${f(m)}',this.value)" placeholder="記錄這週的想法、待辦…">${esc((S.wnote||{})[f(m)]||'')}</textarea></div>`;
-function setNote(k,v){S.wnote=S.wnote||{};v.trim()?S.wnote[k]=v:delete S.wnote[k];save()}
+const todoCard=m=>{const k=f(m),L=(S.todo||{})[k]||[];
+ return `<div class="card" style="margin-top:12px"><h2>To Do List</h2>${L.map(t=>`<div class="td ${t.done?'dn':''}"><span class="tb" onclick="togTodo('${k}','${t.id}')">${t.done?'×':'•'}</span><span class="tdt" onclick="togTodo('${k}','${t.id}')">${esc(t.text)}</span>${t.done?`<small>${md(t.done)}</small>`:''}<button class="x" onclick="delTodo('${k}','${t.id}')">×</button></div>`).join('')}
+ <div class="row"><input id="tdi" style="flex:1;min-width:140px" placeholder="新增待辦…" onkeydown="if(event.key==='Enter')addTodo('${k}')"><button class="btn pri" onclick="addTodo('${k}')">新增</button></div></div>`};
+function addTodo(k){const v=$('#tdi').value.trim();if(!v)return;S.todo=S.todo||{};(S.todo[k]=S.todo[k]||[]).push({id:uid(),text:v,done:null});save();render();const i=$('#tdi');if(i)i.focus()}
+function togTodo(k,id){const t=S.todo[k].find(x=>x.id===id);t.done=t.done?null:today();save();render()}
+function delTodo(k,id){ask('確定刪除這個待辦？',()=>{S.todo[k]=S.todo[k].filter(x=>x.id!==id);save();render()})}
+function todoCheck(){if($('#ov').classList.contains('on'))return;const pk=f(add(mon(new Date()),-7)),L=((S.todo||{})[pk]||[]).filter(t=>!t.done);
+ if(!L.length||(S.todoSeen||{})[pk])return;S.todoSeen=S.todoSeen||{};S.todoSeen[pk]=true;save();
+ modal(`<div class="big"><button class="x" onclick="closeM()">×</button><h3>上週仍未完成</h3><div style="text-align:left;font-size:16px">${L.map(t=>`<div>• ${esc(t.text)}</div>`).join('')}</div><div class="row" style="justify-content:center;margin-top:12px"><button class="btn pri" onclick="moveTodo('${pk}')">移到本週 To Do</button><button class="btn" onclick="closeM()">關閉</button></div></div>`)}
+function moveTodo(pk){const ck=f(mon(new Date())),L=S.todo[pk].filter(t=>!t.done);S.todo[pk]=S.todo[pk].filter(t=>t.done);S.todo[ck]=(S.todo[ck]||[]).concat(L);save();closeM();toToday();render();toast('已移到本週')}
+function alignGrid(){const b=document.body,el=document.querySelector('#main .cg');if(!el){b.style.backgroundPosition='0 0';return}
+ const r=el.getBoundingClientRect(),m=v=>(((v+.5-11)%22)+22)%22;b.style.backgroundPosition=`${m(r.left+scrollX)}px ${m(r.top+scrollY)}px`}
+addEventListener('resize',()=>alignGrid());if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>alignGrid());
 function calView(){const W=wks();if(!W.length)return'<div class="card">請先到【設定】設定起訖日。</div>';
  wi=Math.max(0,Math.min(wi,W.length-1));
  return `<div class="nav"><button class="btn" onclick="wi--;render()" ${wi?'':'disabled'}>‹</button>
  <select onchange="wi=+this.value;render()">${W.map((m,i)=>`<option value="${i}" ${i==wi?'selected':''}>第 ${i+1} 週　${md(m)}~${md(add(m,4))}</option>`).join('')}</select>
- <button class="btn" onclick="wi++;render()" ${wi<W.length-1?'':'disabled'}>›</button><button class="btn" onclick="toToday();render()">本週</button></div>`+week(W[wi])+noteCard(W[wi])}
+ <button class="btn" onclick="wi++;render()" ${wi<W.length-1?'':'disabled'}>›</button><button class="btn" onclick="toToday();render()">本週</button></div>`+week(W[wi])+todoCard(W[wi])}
 function delRem(mk,id){S.rem[mk]=(S.rem[mk]||[]).filter(r=>r.id!==id);save();render()}
 
 /* ---------- modal ---------- */
@@ -188,7 +212,7 @@ function progView(){
  let L=`<div class="card">`;
  if(!TR().length)L+='<p>尚無進度標誌班級，請到【設定】新增班級並勾選「進度標誌」。</p>';
  U.forEach(u=>{const A=S.units[u].slice().sort((a,b)=>allDone(a)-allDone(b)||a.t-b.t);
-  L+=`<details ${openU[u]?'open':''} ontoggle="openU['${u}']=this.open"><summary><span class="st">${u} <small>${A.filter(i=>!allDone(i)).length} 進行中／共 ${A.length}</small></span><span class="hd">${TR().map(c=>`<b class="hc" style="background:${c.color}">${esc(c.name)}</b>`).join('')}<i class="sp"></i></span></summary>`;
+  L+=`<details ${openU[u]?'open':''} ontoggle="openU['${u}']=this.open"><summary><span class="st">${u} <small>${A.filter(i=>!allDone(i)).length}/共${A.length}</small></span><span class="hd">${TR().map(c=>`<b class="hc" style="background:${c.color}">${esc(c.name)}</b>`).join('')}<i class="sp"></i></span></summary>`;
   A.forEach(it=>{L+=`<div class="pr ${allDone(it)?'done':''}"><span class="pt">• ${esc(it.title)}</span><span class="pc">`+
    TR().map(c=>{const g=stOf(it,c.id);return `<button class="cb ${g?g.st:''}" style="--c:${c.color}" title="${esc(c.name)}" onclick="openProg('${u}','${it.id}','${c.id}')">${g?(g.st==='done'?'✓':md(g.date)):''}</button>`}).join('')+
    `<button class="x" onclick="delProg('${u}','${it.id}')">×</button></span></div>`});
@@ -257,7 +281,7 @@ function setView(){
  <div class="row"><input id="cn" placeholder="班級名稱" size="12"><label><input type="checkbox" id="ctk"> 進度標誌</label></div>
  <div class="sw">${PAL.map(c=>`<label class="${used.includes(c)?'used':''}"><input type="radio" name="col" value="${c}" ${c===def?'checked':''}><i style="background:${c}"></i></label>`).join('')}</div>
  <button class="btn pri" onclick="addClass()">新增班級</button><hr style="border:0;border-top:1px dashed var(--soft);margin:12px 0">
- ${S.classes.map(c=>`<div class="row"><b class="chip" style="background:${c.color}">${esc(c.name)}</b><label><input type="checkbox" ${c.track?'checked':''} onchange="C('${c.id}').track=this.checked;save()"> 進度標誌</label><button class="btn" onclick="renameClass('${c.id}')">改名</button><button class="btn dng" onclick="delClass('${c.id}')">刪除</button></div>`).join('')||'<div class="log">尚未新增班級</div>'}</div>
+ ${S.classes.map(c=>`<div class="row"><b class="chip" style="background:${c.color}">${esc(c.name)}</b><label><input type="checkbox" ${c.track?'checked':''} onchange="C('${c.id}').track=this.checked;save()"> 進度標誌</label><button class="btn" onclick="editClass('${c.id}')">編輯</button><button class="btn dng" onclick="delClass('${c.id}')">刪除</button></div>`).join('')||'<div class="log">尚未新增班級</div>'}</div>
  <div class="card"><h2>預設課表</h2><div class="tw"><table class="tt"><thead><tr><th></th>${D.map(d=>`<th>${d}</th>`).join('')}</tr></thead><tbody>${P.map((n,p)=>`<tr><td>${n}</td>${D.map((_,d)=>{const cur=S.tt[d+'_'+p],cc=C(cur);return `<td><select style="background:${tint(cc?.color)}" onchange="setTT(this,'${d}_${p}')"><option value="">—</option>${S.classes.map(c=>`<option value="${c.id}" ${c.id===cur?'selected':''}>${esc(c.name)}</option>`).join('')}</select></td>`}).join('')}</tr>`).join('')}</tbody></table></div><div class="log">更改課表後，尚未被調課、異動或放假覆蓋的時段會跟著更新。</div></div>
  <div class="card"><h2>雲端同步（Google Apps Script）</h2>
  <div class="row"><input id="syu" style="width:100%" placeholder="Web App 網址（https://script.google.com/…/exec）" value="${esc(SY.url)}"></div>
@@ -269,8 +293,9 @@ function setView(){
 function setRange(){const a=$('#sd').value,b=$('#ed').value;if(!a||!b||a>b)return alert('請確認起訖日期');S.start=a;S.end=b;save();toToday();render()}
 function addClass(){const n=$('#cn').value.trim();if(!n)return alert('請輸入班級名稱');const col=document.querySelector('input[name=col]:checked').value;
  S.classes.push({id:uid(),name:n,color:col,track:$('#ctk').checked});save();render()}
-function renameClass(id){const c=C(id);modal(`<h3>修改班級名稱</h3><input id="rn" value="${esc(c.name)}" style="width:100%"><div class="row"><button class="btn pri" onclick="doRename('${id}')">儲存</button><button class="btn" onclick="closeM()">取消</button></div>`)}
-function doRename(id){const n=$('#rn').value.trim();if(!n)return toast('請輸入名稱');C(id).name=n;save();closeM();render()}
+function editClass(id){const c=C(id),used=S.classes.filter(x=>x.id!==id).map(x=>x.color);
+ modal(`<h3>編輯班級</h3><input id="rn" value="${esc(c.name)}" style="width:100%"><div class="sw">${[...new Set([c.color,...PAL])].map(col=>`<label class="${used.includes(col)?'used':''}"><input type="radio" name="ecol" value="${col}" ${col===c.color?'checked':''}><i style="background:${col}"></i></label>`).join('')}</div><div class="log">顏色較淡的圓點代表已被其他班級使用</div><div class="row"><button class="btn pri" onclick="doEdit('${id}')">儲存</button><button class="btn" onclick="closeM()">取消</button></div>`)}
+function doEdit(id){const n=$('#rn').value.trim();if(!n)return toast('請輸入名稱');const c=C(id);c.name=n;c.color=document.querySelector('input[name=ecol]:checked').value;save();closeM();render()}
 function delClass(id){ask(`確定要刪除班級「${C(id).name}」嗎？課表中的該班級會被清空，進度紀錄也會移除。`,()=>{S.classes=S.classes.filter(c=>c.id!==id);for(const k in S.tt)if(S.tt[k]===id)delete S.tt[k];U.forEach(u=>S.units[u].forEach(it=>it.log=it.log.filter(g=>g.cid!==id)));save();render()})}
 function setTT(el,k){const v=el.value;v?S.tt[k]=v:delete S.tt[k];el.style.background=tint(C(v)?.color);save()}
 function exportData(){S.meta.lastExport=Date.now();save();const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S,null,1)],{type:'application/json'}));a.download=`bujo-${today()}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);if(tab==='set')render()}
@@ -284,7 +309,7 @@ function endTerm(){modal(`<h3>學期結束</h3><div class="row"><label>今日日
 let _wiped=false;
 function doEnd(){const td=$('#td').value;if(!td)return toast('請選擇今日日期');const pj=$('#pj').checked,pp=$('#pp').checked;
  ask('確定要格式化整份行事曆嗎？此動作無法復原。',()=>{_wiped=false;
-  const wipe=()=>{if(_wiped)return;_wiped=true;const b=blank();S.start=b.start;S.end=b.end;S.over={};S.rec={};S.units=b.units;S.rem={};S.wnote={};S.log=[];S.meta.term=td;S.meta.created=Date.now();save();$('#print').innerHTML='';toToday();render();toast('已格式化')};
+  const wipe=()=>{if(_wiped)return;_wiped=true;const b=blank();S.start=b.start;S.end=b.end;S.over={};S.rec={};S.units=b.units;S.rem={};S.wnote={};S.todo={};S.todoSeen={};S.log=[];S.meta.term=td;S.meta.created=Date.now();save();$('#print').innerHTML='';toToday();render();toast('已格式化')};
   if(pj)exportData();
   if(pp){$('#print').innerHTML=`<h1>教學手帖　${S.start} ～ ${S.end}（結算日 ${td}）</h1>`+wks().map(m=>week(m,true)).join('');window.onafterprint=()=>setTimeout(wipe,300);setTimeout(wipe,60000);window.print()}
   else wipe()})}
@@ -298,7 +323,7 @@ const cloudOn=()=>!!(SY.url&&SY.token);
 function setSync(t){syncSt=t;const el=$('#sync');if(el)el.textContent=t}
 async function api(b){const r=await fetch(SY.url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({token:SY.token},b))});return r.json()}
 function schedulePush(){if(!cloudOn())return;clearTimeout(pushT);setSync('☁ 待儲存…');pushT=setTimeout(()=>push(),1500)}
-function applyCloud(d,rev){closeM();S=Object.assign(blank(),d);migrate();localSave();SY.rev=rev;saveSY();dirty=false;toToday();render();setSync('☁ 已同步')}
+function applyCloud(d,rev){closeM();S=Object.assign(blank(),d);migrate();localSave();SY.rev=rev;saveSY();dirty=false;toToday();render();setSync('☁ 已同步');todoCheck()}
 async function push(force){if(!cloudOn())return;if(busy){schedulePush();return}busy=true;const v=ver;setSync('☁ 儲存中…');
  try{const r=await api({action:'set',data:S,baseRev:force?null:SY.rev});
   if(r.ok){SY.rev=r.rev;saveSY();if(ver===v){dirty=false;setSync('☁ 已同步')}else schedulePush()}
@@ -317,17 +342,17 @@ function conflict(r){_cr=r;modal(`<h3>雲端與這台裝置的資料不同</h3><
 function connect(){SY.url=$('#syu').value.trim();SY.token=$('#syt').value.trim();SY.rev=0;saveSY();if(!cloudOn())return toast('請填入網址與密語');pull(true)}
 function syncNow(){if(!cloudOn())return toast('尚未設定連線');dirty?push():pull(true)}
 function disconnect(){SY={url:'',token:'',rev:0};saveSY();setSync('');render();toast('已中斷連線')}
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&cloudOn()&&!dirty&&!busy)pull()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)todoCheck();if(!document.hidden&&cloudOn()&&!dirty&&!busy)pull()});
 
 /* ---------- shell ---------- */
 function render(){
  $('#tabs').innerHTML=[['cal','行事曆'],['prog','進度'],['chg','異動'],['set','設定']].map(([k,n])=>`<button class="${tab===k?'on':''}" onclick="tab='${k}';render();scrollTo(0,0)">${n}</button>`).join('');
  $('#main').innerHTML=({cal:calView,prog:progView,chg:chgView,set:setView})[tab]();
- if(tab==='chg')['a','b','c'].forEach(pv);if(tab==='prog')mFill()}
-function backupCheck(){const base=Math.max(S.meta.lastExport||0,S.meta.created||0),now=Date.now(),W=14*864e5;
+ if(tab==='chg')['a','b','c'].forEach(pv);if(tab==='prog')mFill();alignGrid()}
+function backupCheck(){if($('#ov').classList.contains('on'))return;const base=Math.max(S.meta.lastExport||0,S.meta.created||0),now=Date.now(),W=14*864e5;
  if(now-base>W&&now>(S.meta.dismiss||0)&&!(cloudOn()&&SY.rev))modal(`<div class="big"><button class="x" onclick="dismissB()">×</button><h3>該備份囉</h3><p>已超過 2 週沒有匯出資料。<br>資料只存在這個瀏覽器，建議立即備份。</p><button class="btn pri" onclick="exportData();dismissB()">立即匯出 .json</button></div>`)}
 function dismissB(){S.meta.dismiss=Date.now()+14*864e5;save();closeM()}
-migrate();toToday();render();backupCheck();setSync(cloudOn()?'☁':'');if(cloudOn())pull();
+migrate();toToday();render();todoCheck();backupCheck();setSync(cloudOn()?'☁':'');if(cloudOn())pull();
 </script>
 </body>
 </html>
